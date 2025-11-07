@@ -1,28 +1,56 @@
-import { useState } from 'react'
+import React, { useEffect } from 'react';
+import HeroSection from './components/HeroSection';
+import EssenceSection from './components/EssenceSection';
+import HowItWorks from './components/HowItWorks';
+import WhatMakesDifferent from './components/WhatMakesDifferent';
+import Testimonials from './components/Testimonials';
+import AboutVision from './components/AboutVision';
+import BenefitsAndCTA from './components/BenefitsAndCTA';
 
-function App() {
-  const [count, setCount] = useState(0)
+const App = () => {
+  // Smooth scroll for internal anchors
+  useEffect(() => {
+    const handler = (e) => {
+      const target = e.target.closest('a[href^="#"]');
+      if (!target) return;
+      const id = target.getAttribute('href');
+      const el = document.querySelector(id);
+      if (el) {
+        e.preventDefault();
+        el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+    document.addEventListener('click', handler);
+    return () => document.removeEventListener('click', handler);
+  }, []);
+
+  useEffect(() => {
+    const meta = document.querySelector('meta[name="description"]');
+    const content = 'Deva Mastery — guided spiritual journaling app to awaken your consciousness, heal emotional patterns, and manifest inner harmony.';
+    if (meta) {
+      meta.setAttribute('content', content);
+    } else {
+      const m = document.createElement('meta');
+      m.name = 'description';
+      m.content = content;
+      document.head.appendChild(m);
+    }
+  }, []);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-purple-50 to-blue-50 flex items-center justify-center">
-      <div className="bg-white p-8 rounded-lg shadow-lg">
-        <h1 className="text-3xl font-bold text-gray-800 mb-4">
-          Vibe Coding Platform
-        </h1>
-        <p className="text-gray-600 mb-6">
-          Your AI-powered development environment
-        </p>
-        <div className="text-center">
-          <button
-            onClick={() => setCount(count + 1)}
-            className="bg-blue-500 hover:bg-blue-600 text-white font-semibold py-2 px-4 rounded"
-          >
-            Count is {count}
-          </button>
-        </div>
-      </div>
+    <div className="min-h-screen w-full bg-black font-[Inter] text-white">
+      <HeroSection />
+      <EssenceSection />
+      <HowItWorks />
+      <WhatMakesDifferent />
+      <Testimonials />
+      <AboutVision />
+      <BenefitsAndCTA />
+      <footer className="bg-black/80 py-10 text-center text-xs text-violet-200/60">
+        © {new Date().getFullYear()} Deva Mastery. All rights reserved.
+      </footer>
     </div>
-  )
-}
+  );
+};
 
-export default App
+export default App;
